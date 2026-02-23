@@ -80,3 +80,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+"""Dataset download utilities (planned for Day 2)."""

@@ -1,0 +1,16 @@
+seed: 42
+
+data:
+  raw_path: data/raw
+  processed_path: data/processed
+
+split:
+  method: time_based
+  valid_weeks: 8
+  test_weeks: 8
+
+candidate_generation:
+  top_n: 500
+
+evaluation:
+  k_list: [10, 20]
