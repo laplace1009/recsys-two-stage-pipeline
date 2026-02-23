@@ -1,5 +1,19 @@
 # recsys-two-stage-pipeline
 
+Purchase-transaction recommendation portfolio: candidate generation (ALS) -> ranking (LTR) -> diversity/serendipity reranking -> A/B test plan.
+
+## Day 2 scope
+
+- Add reproducible dataset download script for UCI Online Retail.
+- Add dataset source and license note (CC BY 4.0).
+
+## Download data
+
+```bash
+python3 src/data/download.py
+```
+
+The script downloads the dataset into `data/raw/` and keeps raw files out of Git tracking.
 구매 트랜잭션 기반 개인화 추천 피드: 후보생성(ALS) -> 랭킹(LTR) -> 다양성/우연성 리랭킹(텍스트 임베딩) -> A/B 테스트 설계 문서까지.
 
 ## Problem
