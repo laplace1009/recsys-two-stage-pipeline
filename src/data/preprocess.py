@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import re
+import json
 from pathlib import Path
 
 import pandas as pd
+
+from split import filter_min_invoices, build_tables_and_split
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_PATH = PROJECT_ROOT / "data"/ "raw" / "Online Retail.xlsx"
@@ -121,7 +124,35 @@ def main() -> None:
     df = remove_invalid_qty_price(df)
     df = remove_null_customers(df)
     df = filter_non_products(df)
+    df = normalize_descriptions(df)
     df = merge_duplicate_lines(df)
+    df = filter_min_invoices(df, min_invoices=2)
+
+    result = build_tables_and_split(df)
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    for name in ["transactions_clean", "events", "interactions",
+                 "item_meta", "item_popularity"]:
+        path = OUT_DIR / f"{name}.parquet"
+        result[name].to_parquet(path, index=False)
+
+    # split 정보 저장
+    splits_path = OUT_DIR / "splits.json"
+    with open(splits_path, "w") as f:
+        json.dump(result["split_info"], f, indent=2, ensure_ascii=False)
+
+    # 최종 요약
+    tx = result["transactions_clean"]
+    print("\n" + "=" * 60)
+    print("  전처리 완료 요약")
+    print("=" * 60)
+    print(f"  유저 수:    {tx['user_id'].nunique():,}")
+    print(f"  아이템 수:  {tx['item_id'].nunique():,}")
+    print(f"  거래 수:    {tx['invoice_no'].nunique():,}")
+    print(f"  기간:       {tx['ts'].min()} ~ {tx['ts'].max()}")
+    print(f"  이벤트 수:  {len(result['events']):,}")
+    print(f"  상호작용:   {len(result['interactions']):,}")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
