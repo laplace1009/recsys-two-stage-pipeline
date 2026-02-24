@@ -209,3 +209,4 @@ __marimo__/
 # Project data artifacts
 data/raw/*
 !data/raw/.gitkeep
+data/processed/*.parquet
