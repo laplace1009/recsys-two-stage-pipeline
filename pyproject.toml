@@ -3,9 +3,11 @@ name = "recsys-two-stage-pipeline"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
+    "implicit>=0.7.2",
     "numpy>=2.4.2",
     "openpyxl>=3.1.5",
     "pandas>=3.0.1",
     "pyarrow>=23.0.1",
     "pyyaml>=6.0.3",
+    "scipy>=1.15.0",
 ]
